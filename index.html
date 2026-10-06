@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="fr-BE">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CDM-MATH — Cahier de matières mathématiques · Tronc commun</title>
+  <meta name="description" content="CDM-MATH facilite l’encodage du cahier de matières, du prévisionnel et des notes critériées pour les mathématiques du Tronc commun (WBE), sur iPhone, iPad et Mac." />
+  <link rel="icon" href="assets/icon.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #07111c;
+      --ink-soft: #0f2133;
+      --slate: #16324a;
+      --mist: #d7e6f4;
+      --paper: #eef5fb;
+      --white: #f7fbff;
+      --accent: #3366c7;
+      --accent-bright: #4d82e8;
+      --accent-deep: #1f4aa3;
+      --s1: #6b5bd4;
+      --s2: #3366c7;
+      --s3: #e07a4d;
+      --type-s: #d64545;
+      --type-sf: #e0892e;
+      --type-c: #2f9e5f;
+      --bleu: #3f7aeb;
+      --vert: #2e9e61;
+      --jaune: #d9a61f;
+      --orange: #eb7a29;
+      --text: #e8f1fa;
+      --muted: #9bb3c9;
+      --line: rgba(215, 230, 244, 0.14);
+      --radius: 18px;
+      --max: 1120px;
+      --font-display: "Outfit", sans-serif;
+      --font-body: "Source Sans 3", sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--ink);
+      line-height: 1.55;
+      font-size: 1.05rem;
+      overflow-x: hidden;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button, .btn { font: inherit; cursor: pointer; border: 0; }
+
+    .wrap {
+      width: min(var(--max), calc(100% - 2.5rem));
+      margin-inline: auto;
+    }
+
+    /* ——— Atmosphere ——— */
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(ellipse 80% 55% at 70% 8%, rgba(51, 102, 199, 0.28), transparent 55%),
+        radial-gradient(ellipse 60% 40% at 10% 90%, rgba(224, 122, 77, 0.12), transparent 50%),
+        linear-gradient(165deg, var(--ink) 0%, var(--ink-soft) 45%, #0a1826 100%);
+    }
+    .grid-bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(215, 230, 244, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(215, 230, 244, 0.045) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 20%, transparent 75%);
+      animation: drift 48s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes drift {
+      from { transform: translate3d(0, 0, 0); }
+      to { transform: translate3d(-48px, -48px, 0); }
+    }
+
+    /* ——— Nav ——— */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(14px);
+      background: rgba(7, 17, 28, 0.72);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s ease, background 0.3s ease;
+    }
+    .nav.is-scrolled { border-bottom-color: var(--line); }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.85rem 0;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .nav-brand img {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.25rem;
+      list-style: none;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.55rem 1rem;
+      border-radius: 999px;
+      background: var(--accent);
+      color: white;
+      font-weight: 600;
+      font-size: 0.92rem;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .nav-cta:hover { background: var(--accent-bright); transform: translateY(-1px); }
+
+    /* ——— Hero ——— */
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      display: grid;
+      align-items: end;
+      padding: 2rem 0 3.5rem;
+      overflow: hidden;
+    }
+    .hero-plane {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background:
+        linear-gradient(180deg, transparent 35%, rgba(7, 17, 28, 0.92) 78%, var(--ink) 100%),
+        radial-gradient(ellipse 90% 70% at 78% 28%, rgba(51, 102, 199, 0.35), transparent 60%);
+    }
+    .hero-visual {
+      position: absolute;
+      right: max(-4vw, calc(50% - 640px));
+      top: 8%;
+      width: min(52vw, 560px);
+      aspect-ratio: 1;
+      z-index: 1;
+      animation: floatIn 1.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .hero-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 28% 22% 30% 24%;
+      box-shadow:
+        0 40px 80px rgba(0, 0, 0, 0.45),
+        0 0 0 1px rgba(215, 230, 244, 0.12);
+      filter: saturate(1.05);
+    }
+    .hero-visual::before {
+      content: "";
+      position: absolute;
+      inset: -8%;
+      border-radius: 32% 26% 34% 28%;
+      background: conic-gradient(from 210deg, transparent 40%, rgba(51, 102, 199, 0.35), transparent 70%);
+      animation: spinSlow 28s linear infinite;
+      z-index: -1;
+    }
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(28px) scale(0.96); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes spinSlow { to { transform: rotate(360deg); } }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 2;
+      max-width: 34rem;
+      animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+    }
+    .hero-brand {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(3.4rem, 9vw, 5.8rem);
+      line-height: 0.92;
+      letter-spacing: -0.045em;
+      color: var(--white);
+      margin-bottom: 1.1rem;
+    }
+    .hero-brand span {
+      display: block;
+      font-size: 0.28em;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-bright);
+      margin-bottom: 0.55rem;
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-weight: 650;
+      font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      color: var(--mist);
+      margin-bottom: 0.85rem;
+    }
+    .hero p.lead {
+      color: var(--muted);
+      font-size: 1.08rem;
+      max-width: 32rem;
+      margin-bottom: 1.75rem;
+    }
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.85rem 1.35rem;
+      border-radius: 999px;
+      background: var(--accent);
+      color: white;
+      font-weight: 650;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .btn-primary:hover { background: var(--accent-bright); transform: translateY(-2px); }
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.85rem 1.25rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--mist);
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.03);
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .btn-ghost:hover {
+      border-color: rgba(215, 230, 244, 0.35);
+      background: rgba(255, 255, 255, 0.06);
+    }
+    .platforms {
+      margin-top: 1.5rem;
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .platforms b {
+      color: var(--mist);
+      font-weight: 600;
+    }
+
+    /* ——— Sections ——— */
+    section {
+      padding: 5.5rem 0 1rem;
+    }
+    .section-kicker {
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-bright);
+      margin-bottom: 0.7rem;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 750;
+      font-size: clamp(1.85rem, 4vw, 2.6rem);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      color: var(--white);
+      max-width: 18ch;
+      margin-bottom: 0.75rem;
+    }
+    .section-lead {
+      color: var(--muted);
+      max-width: 38rem;
+      margin-bottom: 2.5rem;
+      font-size: 1.08rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Audience strip */
+    .audience {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 2.5rem;
+      align-items: end;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .audience-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .meta-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.98rem;
+    }
+    .meta-line span { color: var(--muted); }
+    .meta-line strong { color: var(--white); font-weight: 650; text-align: right; }
+
+    /* Three cahiers — stacked bands, not cards */
+    .cahiers {
+      display: grid;
+      gap: 0;
+      margin-top: 0.5rem;
+    }
+    .cahier {
+      display: grid;
+      grid-template-columns: 7rem 1fr;
+      gap: 1.5rem;
+      padding: 1.75rem 0;
+      border-top: 1px solid var(--line);
+      align-items: start;
+    }
+    .cahier:last-child { border-bottom: 1px solid var(--line); }
+    .cahier-index {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 2.4rem;
+      letter-spacing: -0.04em;
+      color: var(--accent-bright);
+      line-height: 1;
+      padding-top: 0.15rem;
+    }
+    .cahier h3 {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+      color: var(--white);
+    }
+    .cahier p { color: var(--muted); max-width: 42rem; }
+
+    /* Features mosaic — interaction containers with purpose */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+    .feature {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 0.75rem;
+      background: rgba(15, 33, 51, 0.85);
+      padding: 1.15rem;
+      min-height: 9.5rem;
+      transition: background 0.25s ease;
+    }
+    .feature:hover { background: rgba(22, 50, 74, 0.95); }
+    .feature .ui { min-height: 150px; }
+    .feature-text h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      margin-bottom: 0.35rem;
+      color: var(--white);
+    }
+    .feature-text p { color: var(--muted); font-size: 0.95rem; }
+
+    /* Rules */
+    .rules-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem 3rem;
+    }
+    .rule-block h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.85rem;
+      color: var(--white);
+    }
+    .rule-block ul {
+      list-style: none;
+      display: grid;
+      gap: 0.65rem;
+    }
+    .rule-block li {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.7rem;
+      align-items: start;
+      color: var(--muted);
+    }
+    .rule-block li::before {
+      content: "";
+      width: 0.55rem;
+      height: 0.55rem;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-top: 0.45rem;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.85rem;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 650;
+      font-family: var(--font-display);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--line);
+    }
+    .dot {
+      width: 0.55rem;
+      height: 0.55rem;
+      border-radius: 50%;
+    }
+    .chip.s1 .dot { background: var(--s1); }
+    .chip.s2 .dot { background: var(--s2); }
+    .chip.s3 .dot { background: var(--s3); }
+    .chip.type-s .dot { background: var(--type-s); }
+    .chip.type-sf .dot { background: var(--type-sf); }
+    .chip.type-c .dot { background: var(--type-c); }
+    .chip.bleu .dot { background: var(--bleu); }
+    .chip.vert .dot { background: var(--vert); }
+    .chip.jaune .dot { background: var(--jaune); }
+    .chip.orange .dot { background: var(--orange); }
+
+    .validation {
+      margin-top: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--line);
+    }
+    .validation h3 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--white);
+    }
+    .validation-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.85rem;
+    }
+    .val {
+      padding: 1rem 0.9rem;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .val strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      margin-bottom: 0.35rem;
+    }
+    .val span { color: var(--muted); font-size: 0.9rem; }
+    .val.bleu strong { color: var(--bleu); }
+    .val.vert strong { color: var(--vert); }
+    .val.jaune strong { color: var(--jaune); }
+    .val.orange strong { color: var(--orange); }
+
+    /* Daily */
+    .daily-list {
+      list-style: none;
+      display: grid;
+      gap: 0;
+    }
+    .daily-list li {
+      display: grid;
+      grid-template-columns: 10rem 1fr;
+      gap: 1.25rem;
+      padding: 1.15rem 0;
+      border-top: 1px solid var(--line);
+    }
+    .daily-list li:last-child { border-bottom: 1px solid var(--line); }
+    .daily-list b {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--white);
+    }
+    .daily-list span { color: var(--muted); }
+
+    /* ——— Device mock (Paramètres) ——— */
+    .device-stage {
+      display: grid;
+      grid-template-columns: minmax(260px, 320px) 1fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+    .phone {
+      margin: 0;
+      background: #f2f2f7;
+      color: #1c1c1e;
+      border-radius: 36px;
+      padding: 0.55rem 0.55rem 1rem;
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.08),
+        0 28px 60px rgba(0, 0, 0, 0.45);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Source Sans 3", sans-serif;
+      font-size: 0.92rem;
+      max-width: 320px;
+    }
+    .phone-notch {
+      width: 34%;
+      height: 1.05rem;
+      margin: 0.35rem auto 0.55rem;
+      background: #0b0b0d;
+      border-radius: 999px;
+    }
+    .ios-bar {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 0.35rem 0.65rem 0.85rem;
+      font-size: 0.95rem;
+    }
+    .ios-bar strong {
+      font-weight: 650;
+      text-align: center;
+    }
+    .ios-bar .ios-link:last-child { text-align: right; }
+    .ios-link { color: #3366c7; font-weight: 500; }
+    .ios-scroll {
+      background: #f2f2f7;
+      border-radius: 0 0 28px 28px;
+      padding: 0 0.55rem 0.75rem;
+      max-height: 460px;
+      overflow: auto;
+    }
+    .ios-section-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      color: #6c6c70;
+      margin: 0.85rem 0.85rem 0.4rem;
+    }
+    .ios-group {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .ios-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.78rem 0.9rem;
+      border-bottom: 1px solid rgba(60, 60, 67, 0.12);
+      min-height: 2.6rem;
+    }
+    .ios-row:last-child { border-bottom: 0; }
+    .ios-label { color: #6c6c70; }
+    .ios-value { font-weight: 500; text-align: right; }
+    .ios-placeholder { color: #aeaeb2; }
+    .ios-trash {
+      width: 1.15rem;
+      height: 1.15rem;
+      border-radius: 4px;
+      background:
+        linear-gradient(#ff3b30, #ff3b30) center 28%/55% 2px no-repeat,
+        linear-gradient(#ff3b30, #ff3b30) center 45%/40% 42% no-repeat;
+      opacity: 0.9;
+      flex-shrink: 0;
+    }
+    .ios-toggle {
+      width: 3.1rem;
+      height: 1.85rem;
+      border-radius: 999px;
+      background: #34c759;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .ios-toggle::after {
+      content: "";
+      position: absolute;
+      top: 0.16rem;
+      right: 0.16rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+    .ios-footnote {
+      font-size: 0.78rem;
+      color: #6c6c70;
+      margin: 0.55rem 0.85rem 0.25rem;
+      line-height: 1.35;
+    }
+    .ios-sync {
+      margin-top: 0.75rem;
+      padding: 0.9rem 1rem;
+      border-radius: 12px;
+      background: rgba(46, 158, 97, 0.12);
+      border: 1px solid rgba(46, 158, 67, 0.18);
+    }
+    .ios-sync-title {
+      font-weight: 700;
+      color: #1f7a45;
+      margin-bottom: 0.15rem;
+    }
+    .ios-sync-sub, .ios-sync-meta {
+      font-size: 0.82rem;
+      color: #3d6b52;
+    }
+    .device-caption h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--white);
+      margin: 0 0 0.45rem;
+    }
+    .device-caption h3 + p {
+      color: var(--muted);
+      margin-bottom: 1.4rem;
+      max-width: 34rem;
+    }
+    .device-caption h3:not(:first-child) { margin-top: 0.4rem; }
+
+    /* ——— Real screenshots ——— */
+    .shot-rail {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin-top: 2rem;
+      align-items: start;
+    }
+    .shot-rail.three { grid-template-columns: repeat(3, 1fr); }
+    .shot {
+      background: rgba(15, 33, 51, 0.55);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 0.75rem;
+      margin: 0;
+    }
+    .shot img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.28);
+    }
+    .shot.wide img { background: #f7f8fa; }
+    .shot figcaption {
+      margin-top: 0.75rem;
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 650;
+      color: var(--mist);
+      text-align: center;
+    }
+    .cahier-visual {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 1.75rem;
+      align-items: center;
+      padding: 1.75rem 0;
+      border-top: 1px solid var(--line);
+    }
+    .cahier-visual:nth-child(even) { grid-template-columns: 1.15fr 1fr; }
+    .cahier-visual:nth-child(even) .copy { order: 2; }
+    .cahier-visual:last-of-type { border-bottom: 1px solid var(--line); }
+    .cahier-visual .copy h3 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.4rem;
+    }
+    .cahier-visual .copy p { color: var(--muted); }
+    .cahier-visual .copy .num {
+      font-family: var(--font-display);
+      font-weight: 800;
+      color: var(--accent-bright);
+      font-size: 1.1rem;
+      margin-bottom: 0.35rem;
+    }
+    .cahier-visual .frame {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: #fff;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.32);
+    }
+    .cahier-visual .frame img { width: 100%; display: block; }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin-top: 0.5rem;
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      overflow: visible;
+    }
+    .feature {
+      display: grid;
+      gap: 0.85rem;
+      background: rgba(15, 33, 51, 0.55);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 1rem;
+      min-height: 0;
+    }
+    .feature:hover { background: rgba(22, 50, 74, 0.85); }
+    .feature .frame {
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .feature .frame img { width: 100%; display: block; }
+    .feature-text h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      margin-bottom: 0.35rem;
+      color: var(--white);
+    }
+    .feature-text p { color: var(--muted); font-size: 0.95rem; }
+    .daily-visuals {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin-top: 1.75rem;
+    }
+    .gallery-note {
+      margin-top: 0.85rem;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    /* CTA band */
+    .cta-band {
+      margin: 5rem 0 2rem;
+      padding: 3rem 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+    .cta-band h2 {
+      font-family: var(--font-display);
+      font-weight: 750;
+      font-size: clamp(1.7rem, 3.5vw, 2.3rem);
+      letter-spacing: -0.03em;
+      max-width: 18ch;
+      margin-bottom: 0.75rem;
+      color: var(--white);
+    }
+    .cta-band p {
+      color: var(--muted);
+      max-width: 36rem;
+      margin-bottom: 1.5rem;
+    }
+
+    footer {
+      padding: 2.5rem 0 3.5rem;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+    footer .foot-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: end;
+    }
+    footer strong { color: var(--mist); font-weight: 650; }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .hero-visual {
+        position: relative;
+        right: auto;
+        top: auto;
+        width: min(72vw, 280px);
+        margin: 1rem 0 1.5rem;
+      }
+      .hero {
+        align-items: start;
+        min-height: auto;
+        padding-top: 1.25rem;
+        padding-bottom: 3rem;
+      }
+      .hero-plane {
+        background: linear-gradient(180deg, rgba(51, 102, 199, 0.18), transparent 55%);
+      }
+      .audience,
+      .rules-grid,
+      .features,
+      .validation-row,
+      .device-stage,
+      .shot-rail,
+      .daily-visuals,
+      .cahier-visual {
+        grid-template-columns: 1fr;
+      }
+      .phone { margin-inline: auto; }
+      .features { grid-template-columns: 1fr; }
+      .daily-list li {
+        grid-template-columns: 1fr;
+        gap: 0.35rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <header class="nav" id="nav">
+    <div class="wrap nav-inner">
+      <a class="nav-brand" href="#top">
+        <img src="assets/icon.png" alt="" width="36" height="36" />
+        CDM-MATH
+      </a>
+      <ul class="nav-links">
+        <li><a href="#apercu">Aperçu</a></li>
+        <li><a href="#cahiers">Cahiers</a></li>
+        <li><a href="#fonctionnalites">Fonctions</a></li>
+        <li><a href="#regles">Règles</a></li>
+      </ul>
+      <a class="nav-cta" href="#apercu">Aperçu</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero wrap">
+      <div class="hero-plane" aria-hidden="true"></div>
+      <div class="hero-visual" aria-hidden="true">
+        <img src="assets/icon.png" alt="" />
+      </div>
+      <div class="hero-copy">
+        <p class="hero-brand"><span>Tronc commun · WBE</span>CDM-MATH</p>
+        <h1>Encodez, planifiez et évaluez les maths du secondaire — sur iPhone, iPad et Mac.</h1>
+        <p class="lead">Application créée pour faciliter l’encodage du cahier de matières pour les mathématiques (Tronc commun), basée sur le programme de WBE.</p>
+        <div class="cta-row">
+          <a class="btn-primary" href="#cahiers">Voir les fonctionnalités</a>
+          <a class="btn-ghost" href="#regles">Lire les règles pédagogiques</a>
+        </div>
+        <p class="platforms"><b>iPhone · iPad · Mac</b> · Sync iCloud · Widget Aujourd’hui</p>
+      </div>
+    </section>
+
+    <section class="wrap reveal" id="pour-qui">
+      <p class="section-kicker">Pour qui</p>
+      <h2 class="section-title">Conçu pour les enseignants de mathématiques</h2>
+      <p class="section-lead">Un outil de terrain pour le Tronc commun (1re à 3e secondaire), fidèle au programme WBE.</p>
+      <div class="audience">
+        <div>
+          <p style="color: var(--muted); max-width: 34rem;">
+            Gérez plusieurs classes et établissements, suivez la progression du programme,
+            planifiez la semaine, encodez les évaluations critériées (S1), puis exportez en PDF —
+            le tout synchronisé via le même identifiant Apple.
+          </p>
+        </div>
+        <div class="audience-meta">
+          <div class="meta-line"><span>Niveaux</span><strong>S1 · S2 · S3</strong></div>
+          <div class="meta-line"><span>Programme</span><strong>WBE — 4 champs</strong></div>
+          <div class="meta-line"><span>Périodes</span><strong>P1 · P2 · P3</strong></div>
+          <div class="meta-line"><span>Concepteur</span><strong>Valenzano Jonathan</strong></div>
+        </div>
+      </div>
+
+      <div class="shot-rail" aria-label="Captures réelles de l’accueil">
+        <figure class="shot">
+          <img src="assets/carte-classe.png" alt="Carte de classe 1A — Athénée Royal Liège Atlas, Valenzano, S1, année 2026-2027" />
+          <figcaption>Carte de classe</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="assets/vue-onglets.png" alt="Sélecteur Vue : Matières, Prévisionnel, Notes" />
+          <figcaption>Vue Matières · Prévisionnel · Notes</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="wrap reveal" id="cahiers">
+      <p class="section-kicker">Cœur de l’app</p>
+      <h2 class="section-title">Trois cahiers en un</h2>
+      <p class="section-lead">Captures réelles de CDM-MATH : matières, prévisionnel et notes.</p>
+
+      <article class="cahier-visual">
+        <div class="copy">
+          <div class="num">01</div>
+          <h3>Cahier de matières</h3>
+          <p>Progression par champ et module, types Savoir / Savoir-faire / Compétence, cases P1–P2–P3.</p>
+        </div>
+        <div class="frame">
+          <img src="assets/cahier-matieres.png" alt="Cahier de matières : Champ 1 géométrie, objectifs Savoir cochés en P1" />
+        </div>
+      </article>
+
+      <article class="cahier-visual">
+        <div class="copy">
+          <div class="num">02</div>
+          <h3>Cahier prévisionnel</h3>
+          <p>Calendrier mois / semaine : cours, évaluations, formations et congés scolaires.</p>
+        </div>
+        <div class="frame">
+          <img src="assets/previsionnel-calendrier.png" alt="Calendrier prévisionnel octobre 2026 avec cours, formation et congés" />
+        </div>
+      </article>
+
+      <article class="cahier-visual">
+        <div class="copy">
+          <div class="num">03</div>
+          <h3>Cahier de notes (S1)</h3>
+          <p>Évaluations par chapitre, résultats couleur (Vert, Jaune, Orange) et critères A–B–C–D.</p>
+        </div>
+        <div class="frame">
+          <img src="assets/cahier-notes.png" alt="Cahier de notes avec évaluations et cotations critériées" />
+        </div>
+      </article>
+    </section>
+
+    <section class="wrap reveal" id="fonctionnalites">
+      <p class="section-kicker">Fonctionnalités</p>
+      <h2 class="section-title">Écrans réels de l’application</h2>
+      <p class="section-lead">Encodage du cours, horaire de classe, navigation entre les vues — tels qu’ils apparaissent dans CDM-MATH.</p>
+      <div class="features">
+        <article class="feature">
+          <div class="frame">
+            <img src="assets/carte-classe.png" alt="Carte de classe 1A" />
+          </div>
+          <div class="feature-text">
+            <h3>Classes</h3>
+            <p>Carte de classe avec établissement, enseignant, niveau S1–S3 et année scolaire.</p>
+          </div>
+        </article>
+        <article class="feature">
+          <div class="frame">
+            <img src="assets/vue-onglets.png" alt="Onglets Vue Matières Prévisionnel Notes" />
+          </div>
+          <div class="feature-text">
+            <h3>Navigation Vue</h3>
+            <p>Passez de Matières à Prévisionnel et Notes sans quitter la classe.</p>
+          </div>
+        </article>
+        <article class="feature">
+          <div class="frame">
+            <img src="assets/encoder-matiere.png" alt="Feuille Encoder la matière" />
+          </div>
+          <div class="feature-text">
+            <h3>Encoder la matière</h3>
+            <p>Liez le cours du jour au programme : champ, module, compétence, évaluation.</p>
+          </div>
+        </article>
+        <article class="feature">
+          <div class="frame">
+            <img src="assets/horaire-classe.png" alt="Horaire de la classe provisoire et définitif" />
+          </div>
+          <div class="feature-text">
+            <h3>Horaire de la classe</h3>
+            <p>Horaires provisoire et définitif avec dates de validité et répartition par jour.</p>
+          </div>
+        </article>
+        <article class="feature">
+          <div class="frame">
+            <img src="assets/cahier-matieres.png" alt="Progression cahier de matières" />
+          </div>
+          <div class="feature-text">
+            <h3>Progression du programme</h3>
+            <p>Barre de progression par champ et cases P1 / P2 / P3 pour chaque objectif.</p>
+          </div>
+        </article>
+        <article class="feature">
+          <div class="frame">
+            <img src="assets/previsionnel-calendrier.png" alt="Calendrier prévisionnel" />
+          </div>
+          <div class="feature-text">
+            <h3>Prévisionnel calendrier</h3>
+            <p>Vue mois ou semaine : matières planifiées, sommatives, formations, congés.</p>
+          </div>
+        </article>
+        <article class="feature">
+          <div class="frame">
+            <img src="assets/cahier-notes.png" alt="Grille d’évaluations" />
+          </div>
+          <div class="feature-text">
+            <h3>Évaluations &amp; cotes</h3>
+            <p>Création d’évaluations, tri des élèves, résultats couleur et critères A–B–C–D.</p>
+          </div>
+        </article>
+        <article class="feature">
+          <div class="feature-text" style="padding:0.35rem 0.15rem;">
+            <h3>Aussi dans l’app</h3>
+            <p>Sync iCloud, sauvegarde complète JSON, export PDF groupé, widget Aujourd’hui, raccourcis Siri et mode clair / sombre.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap reveal" id="regles">
+      <p class="section-kicker">Règles pédagogiques</p>
+      <h2 class="section-title">Fidèle au Tronc commun</h2>
+      <p class="section-lead">Les contraintes scolaires ne sont pas des options : elles sont encodées dans l’app pour coller à la pratique WBE / FWB.</p>
+
+      <div class="rules-grid">
+        <div class="rule-block">
+          <h3>Programme &amp; structure</h3>
+          <ul>
+            <li>Niveaux S1, S2, S3 — mathématiques du Tronc commun.</li>
+            <li>Quatre champs : géométrie, grandeurs, nombres &amp; algèbre, statistiques.</li>
+            <li>Items typés Savoir (S), Savoir-faire (SF), Compétence (C).</li>
+            <li>Volumes indicatifs ≈ 184 (S1), 99 (S2), 87 (S3) objectifs.</li>
+            <li>Périodes d’évaluation P1, P2, P3 pour matières et notes.</li>
+          </ul>
+          <div class="chips" aria-label="Légende des types">
+            <span class="chip type-s"><span class="dot"></span>S · Savoir</span>
+            <span class="chip type-sf"><span class="dot"></span>SF · Savoir-faire</span>
+            <span class="chip type-c"><span class="dot"></span>C · Compétence</span>
+          </div>
+          <div class="chips" aria-label="Niveaux">
+            <span class="chip s1"><span class="dot"></span>S1</span>
+            <span class="chip s2"><span class="dot"></span>S2</span>
+            <span class="chip s3"><span class="dot"></span>S3</span>
+          </div>
+        </div>
+
+        <div class="rule-block">
+          <h3>Grilles critériées</h3>
+          <ul>
+            <li>Quatre critères A–B–C–D par unité d’apprentissage.</li>
+            <li>Critères 2 et 3 souvent incontournables.</li>
+            <li>Unités de grille : 8 en S1, 11 en S2, 8 en S3.</li>
+            <li>Onglet Notes disponible uniquement en S1 ; S2/S3 = matières + prévisionnel.</li>
+            <li>Règles spécifiques pour les unités U6, U7 et U8 en S1.</li>
+          </ul>
+        </div>
+
+        <div class="rule-block">
+          <h3>Établissements &amp; classes</h3>
+          <ul>
+            <li>Liste d’établissements libre, gérée dans les paramètres.</li>
+            <li>Une classe = nom + niveau + année + enseignant + établissement.</li>
+            <li>Fusion intelligente en cas de sync (même identité pédagogique).</li>
+            <li>Copie de prévisionnel d’une classe vers une autre.</li>
+            <li>Absences prévisionnel : formation, journée pédagogique, rentrée, sortie, grève, autres.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="validation">
+        <h3>Validation Tronc commun (résultat couleur)</h3>
+        <div class="validation-row">
+          <div class="val bleu">
+            <strong>Bleu</strong>
+            <span>Dépassé et maîtrisé — ensemble des critères au niveau attendu ou au-delà.</span>
+          </div>
+          <div class="val vert">
+            <strong>Vert</strong>
+            <span>Attendu atteint — validation standard de l’unité.</span>
+          </div>
+          <div class="val jaune">
+            <strong>Jaune</strong>
+            <span>Fragile : un incontournable à C, ou communication / savoirs à renforcer.</span>
+          </div>
+          <div class="val orange">
+            <strong>Orange</strong>
+            <span>Refus / insuffisant : incontournable en D, ou plusieurs critères critiques trop bas.</span>
+          </div>
+        </div>
+        <div class="chips" style="margin-top: 1.1rem;" aria-label="Niveaux A à D">
+          <span class="chip bleu"><span class="dot"></span>A</span>
+          <span class="chip vert"><span class="dot"></span>B</span>
+          <span class="chip jaune"><span class="dot"></span>C</span>
+          <span class="chip orange"><span class="dot"></span>D</span>
+        </div>
+      </div>
+      <p class="gallery-note">Les pastilles Vert / Jaune / Orange du cahier de notes correspondent à ces règles de validation.</p>
+    </section>
+
+    <section class="wrap reveal" id="quotidien">
+      <p class="section-kicker">Au quotidien</p>
+      <h2 class="section-title">De l’horaire au calendrier</h2>
+      <p class="section-lead">Deux écrans centraux pour organiser la semaine et encoder le cours.</p>
+      <div class="daily-visuals">
+        <figure class="shot wide">
+          <img src="assets/horaire-classe.png" alt="Horaire de la classe" />
+          <figcaption>Horaire provisoire / définitif</figcaption>
+        </figure>
+        <figure class="shot wide">
+          <img src="assets/encoder-matiere.png" alt="Encoder la matière" />
+          <figcaption>Encoder la matière du jour</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="wrap reveal" id="apercu">
+      <p class="section-kicker">Galerie</p>
+      <h2 class="section-title">Toutes les captures</h2>
+      <p class="section-lead">Visuels issus de l’application réelle CDM-MATH.</p>
+      <div class="shot-rail three">
+        <figure class="shot"><img src="assets/carte-classe.png" alt="Carte classe" /><figcaption>Classe</figcaption></figure>
+        <figure class="shot"><img src="assets/cahier-matieres.png" alt="Matières" /><figcaption>Matières</figcaption></figure>
+        <figure class="shot"><img src="assets/previsionnel-calendrier.png" alt="Prévisionnel" /><figcaption>Prévisionnel</figcaption></figure>
+        <figure class="shot"><img src="assets/cahier-notes.png" alt="Notes" /><figcaption>Notes</figcaption></figure>
+        <figure class="shot"><img src="assets/encoder-matiere.png" alt="Encoder" /><figcaption>Encoder</figcaption></figure>
+        <figure class="shot"><img src="assets/horaire-classe.png" alt="Horaire" /><figcaption>Horaire</figcaption></figure>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="wrap">
+    <div class="foot-grid">
+      <div>
+        <strong>CDM-MATH</strong> — Tronc commun · programme WBE<br />
+        Application créée pour faciliter l’encodage du cahier de matières pour les mathématiques.
+      </div>
+      <div>
+        Concepteur : Valenzano Jonathan<br />
+        © <span id="year"></span> · Présentation non officielle WBE
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const nav = document.getElementById("nav");
+    const onScroll = () => nav.classList.toggle("is-scrolled", window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    const reveals = document.querySelectorAll(".reveal");
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("is-visible");
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+      reveals.forEach((el) => io.observe(el));
+    } else {
+      reveals.forEach((el) => el.classList.add("is-visible"));
+    }
+  </script>
+</body>
+</html>
