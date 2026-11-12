@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CDM-MATH — Cahier de matières mathématiques · Tronc commun</title>
   <meta name="description" content="CDM-MATH facilite l’encodage du cahier de matières, du prévisionnel et des notes critériées pour les mathématiques du Tronc commun (WBE), sur iPhone, iPad et Mac." />
-  <link rel="icon" href="icon.png" type="image/png" />
+  <link rel="icon" href="assets/icon.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
@@ -775,6 +775,23 @@
       gap: 1.25rem;
       margin-top: 1.75rem;
     }
+    .rgpd {
+      margin-top: 0.5rem;
+      padding: 1.4rem 1.5rem;
+      border-radius: 18px;
+      background: rgba(224, 122, 77, 0.12);
+      border: 1px solid rgba(224, 122, 77, 0.45);
+    }
+    .rgpd h2 {
+      font-family: var(--font-display);
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0.15rem 0 0.7rem;
+    }
+    .rgpd p { max-width: 46rem; }
+    .rgpd .attention { margin-top: 0.85rem; font-weight: 650; }
+
     .gallery-note {
       margin-top: 0.85rem;
       color: var(--muted);
@@ -869,14 +886,15 @@
   <header class="nav" id="nav">
     <div class="wrap nav-inner">
       <a class="nav-brand" href="#top">
-        <img src="icon.png" alt="" width="36" height="36" />
+        <img src="assets/icon.png" alt="" width="36" height="36" />
         CDM-MATH
       </a>
       <ul class="nav-links">
-        <li><a href="#apercu">Aperçu</a></li>
+        <li><a href="#nouveautes">Nouveautés</a></li>
         <li><a href="#cahiers">Cahiers</a></li>
         <li><a href="#fonctionnalites">Fonctions</a></li>
         <li><a href="#regles">Règles</a></li>
+        <li><a href="#rgpd">RGPD</a></li>
       </ul>
       <a class="nav-cta" href="#apercu">Aperçu</a>
     </div>
@@ -886,17 +904,17 @@
     <section class="hero wrap">
       <div class="hero-plane" aria-hidden="true"></div>
       <div class="hero-visual" aria-hidden="true">
-        <img src="icon.png" alt="" />
+        <img src="assets/icon.png" alt="" />
       </div>
       <div class="hero-copy">
         <p class="hero-brand"><span>Tronc commun · WBE</span>CDM-MATH</p>
         <h1>Encodez, planifiez et évaluez les maths du secondaire — sur iPhone, iPad et Mac.</h1>
-        <p class="lead">Application créée pour faciliter l’encodage du cahier de matières pour les mathématiques (Tronc commun), basée sur le programme de WBE.</p>
+        <p class="lead">Application créée pour faciliter l’encodage du cahier de matières pour les mathématiques (Tronc commun), basée sur le programme de WBE. L’accueil, l’emploi du temps, l’agenda, l’appel et les absents aux sommatives tiennent maintenant dans la même journée de classe — y compris sur iPhone.</p>
         <div class="cta-row">
-          <a class="btn-primary" href="#cahiers">Voir les fonctionnalités</a>
+          <a class="btn-primary" href="#nouveautes">Voir les nouveautés</a>
           <a class="btn-ghost" href="#regles">Lire les règles pédagogiques</a>
         </div>
-        <p class="platforms"><b>iPhone · iPad · Mac</b> · Sync iCloud · Widget Aujourd’hui</p>
+        <p class="platforms"><b>iPhone · iPad · Mac</b> · Données locales · Widget Aujourd’hui</p>
       </div>
     </section>
 
@@ -922,14 +940,86 @@
 
       <div class="shot-rail" aria-label="Captures réelles de l’accueil">
         <figure class="shot">
-          <img src="carte-classe.png" alt="Carte de classe 1A — Athénée Royal Liège Atlas, Valenzano, S1, année 2026-2027" />
+          <img src="assets/carte-classe.png" alt="Carte de classe 1A — Athénée Royal Liège Atlas, Valenzano, S1, année 2026-2027" />
           <figcaption>Carte de classe</figcaption>
         </figure>
         <figure class="shot">
-          <img src="vue-onglets.png" alt="Sélecteur Vue : Matières, Prévisionnel, Notes" />
-          <figcaption>Vue Matières · Prévisionnel · Notes</figcaption>
+          <img src="assets/vue-onglets.png" alt="Sélecteur Vue : Matières, Prévisionnel, Notes" />
+          <figcaption>Vue Matières · Prévisionnel · Notes · Présences</figcaption>
         </figure>
       </div>
+    </section>
+
+    <section class="wrap reveal" id="nouveautes">
+      <p class="section-kicker">Nouveautés</p>
+      <h2 class="section-title">De l’accueil à l’appel</h2>
+      <p class="section-lead">Captures de l’application en cours d’année.</p>
+
+      <article class="cahier-visual">
+        <div class="copy">
+          <div class="num">01</div>
+          <h3>Accueil du jour</h3>
+          <p>Paramètres, nouvelle classe, emploi du temps, agenda, grilles et absents. Le bandeau du cours en cours ouvre directement l’appel, la classe ou l’agenda.</p>
+        </div>
+        <div class="frame">
+          <img src="assets/accueil.png" alt="Accueil CDM-MATH : boutons Paramètres, Nouvelle classe, Emploi du temps, Agenda, Grilles, Absents, et bandeau Présences, Classe, Agenda" />
+        </div>
+      </article>
+
+      <article class="cahier-visual">
+        <div class="copy">
+          <div class="num">02</div>
+          <h3>Un seul emploi du temps</h3>
+          <p>Les dates d’horaire provisoire ou définitif, et les fins de 1re, 2e et 3e période, sont les mêmes pour toutes les classes. Les heures du prévisionnel suivent les cases placées dans la grille. La couleur d’une classe suit son niveau : violet en S1, bleu en S2, orange en S3.</p>
+        </div>
+        <div class="frame">
+          <img src="assets/emploi-du-temps.png" alt="Emploi du temps : horaires partagés, fins de période et grille de placement" />
+        </div>
+      </article>
+
+      <article class="cahier-visual">
+        <div class="copy">
+          <div class="num">03</div>
+          <h3>Agenda de la semaine</h3>
+          <p>Semaine ou jour, congés, séances et couleur de la classe. Une séance sommative n’inscrit pas de date sur l’évaluation tant que l’enseignant n’a pas choisi la date.</p>
+        </div>
+        <div class="frame">
+          <img src="assets/agenda.png" alt="Agenda de la semaine du 9 au 13 novembre, avec congé du 11 novembre et séances de la classe 1A" />
+        </div>
+      </article>
+
+      <article class="cahier-visual">
+        <div class="copy">
+          <div class="num">04</div>
+          <h3>Appel et absents</h3>
+          <p>L’appel se prend par colonne datée : présent, absent ou retard, avec les totaux de la période. Les absents à une sommative dont la date a été choisie restent dans la liste ; une case indique que l’évaluation a été repassée.</p>
+        </div>
+        <div class="frame">
+          <img src="assets/presences.png" alt="Onglet Présences : ajout de colonne, toute la classe présente, et cases d’appel." />
+        </div>
+      </article>
+
+      <div class="shot-rail">
+        <figure class="shot">
+          <img src="assets/absents-sommatives.png" alt="Absents aux sommatives : unité, date choisie, et case à cocher pour chaque élève." />
+          <figcaption>Absents aux sommatives · case « repassée »</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="assets/presences.png" alt="Quatre onglets de la classe : Matières, Prévisionnel, Notes et Présences" />
+          <figcaption>Matières · Prévisionnel · Notes · Présences</figcaption>
+        </figure>
+      </div>
+      <article class="cahier-visual">
+        <div class="copy">
+          <div class="num">05</div>
+          <h3>Sommatives obligatoires</h3>
+          <p>Chaque module du cahier de notes a une sommative obligatoire, sur fond jaune. Elle ne se supprime pas. Les évaluations en gris sont formatives. Une sommative sans date choisie affiche « Période ? ».</p>
+        </div>
+        <div class="frame">
+          <img src="assets/cahier-sommatives.png" alt="Cahier de cotes : colonnes jaunes des sommatives obligatoires par unité, et colonnes formatives." />
+        </div>
+      </article>
+      <p class="gallery-note">Sur iPhone, l’accueil, le cahier de notes, la grille critériée et l’appel se réorganisent à la largeur de l’écran. La grille s’encode critère par critère, avec les boutons A, B, C et D.</p>
     </section>
 
     <section class="wrap reveal" id="cahiers">
@@ -944,7 +1034,7 @@
           <p>Progression par champ et module, types Savoir / Savoir-faire / Compétence, cases P1–P2–P3.</p>
         </div>
         <div class="frame">
-          <img src="cahier-matieres.png" alt="Cahier de matières : Champ 1 géométrie, objectifs Savoir cochés en P1" />
+          <img src="assets/cahier-matieres.png" alt="Cahier de matières : Champ 1 géométrie, objectifs Savoir cochés en P1" />
         </div>
       </article>
 
@@ -955,7 +1045,7 @@
           <p>Calendrier mois / semaine : cours, évaluations, formations et congés scolaires.</p>
         </div>
         <div class="frame">
-          <img src="previsionnel-calendrier.png" alt="Calendrier prévisionnel octobre 2026 avec cours, formation et congés" />
+          <img src="assets/previsionnel-calendrier.png" alt="Calendrier prévisionnel octobre 2026 avec cours, formation et congés" />
         </div>
       </article>
 
@@ -966,7 +1056,7 @@
           <p>Évaluations par chapitre, résultats couleur (Vert, Jaune, Orange) et critères A–B–C–D.</p>
         </div>
         <div class="frame">
-          <img src="cahier-notes.png" alt="Cahier de notes avec évaluations et cotations critériées" />
+          <img src="assets/cahier-notes.png" alt="Cahier de notes avec évaluations et cotations critériées" />
         </div>
       </article>
     </section>
@@ -978,7 +1068,7 @@
       <div class="features">
         <article class="feature">
           <div class="frame">
-            <img src="carte-classe.png" alt="Carte de classe 1A" />
+            <img src="assets/carte-classe.png" alt="Carte de classe 1A" />
           </div>
           <div class="feature-text">
             <h3>Classes</h3>
@@ -987,16 +1077,16 @@
         </article>
         <article class="feature">
           <div class="frame">
-            <img src="vue-onglets.png" alt="Onglets Vue Matières Prévisionnel Notes" />
+            <img src="assets/vue-onglets.png" alt="Onglets Vue Matières Prévisionnel Notes" />
           </div>
           <div class="feature-text">
             <h3>Navigation Vue</h3>
-            <p>Passez de Matières à Prévisionnel et Notes sans quitter la classe.</p>
+            <p>Passez de Matières à Prévisionnel, Notes et Présences sans quitter la classe.</p>
           </div>
         </article>
         <article class="feature">
           <div class="frame">
-            <img src="encoder-matiere.png" alt="Feuille Encoder la matière" />
+            <img src="assets/encoder-matiere.png" alt="Feuille Encoder la matière" />
           </div>
           <div class="feature-text">
             <h3>Encoder la matière</h3>
@@ -1005,16 +1095,16 @@
         </article>
         <article class="feature">
           <div class="frame">
-            <img src="horaire-classe.png" alt="Horaire de la classe provisoire et définitif" />
+            <img src="assets/horaire-classe.png" alt="Horaire de la classe provisoire et définitif" />
           </div>
           <div class="feature-text">
             <h3>Horaire de la classe</h3>
-            <p>Horaires provisoire et définitif avec dates de validité et répartition par jour.</p>
+            <p>Les dates sont communes à toutes les classes. Les heures de chaque classe viennent de l’emploi du temps placé.</p>
           </div>
         </article>
         <article class="feature">
           <div class="frame">
-            <img src="cahier-matieres.png" alt="Progression cahier de matières" />
+            <img src="assets/cahier-matieres.png" alt="Progression cahier de matières" />
           </div>
           <div class="feature-text">
             <h3>Progression du programme</h3>
@@ -1023,7 +1113,7 @@
         </article>
         <article class="feature">
           <div class="frame">
-            <img src="previsionnel-calendrier.png" alt="Calendrier prévisionnel" />
+            <img src="assets/previsionnel-calendrier.png" alt="Calendrier prévisionnel" />
           </div>
           <div class="feature-text">
             <h3>Prévisionnel calendrier</h3>
@@ -1032,17 +1122,17 @@
         </article>
         <article class="feature">
           <div class="frame">
-            <img src="cahier-notes.png" alt="Grille d’évaluations" />
+            <img src="assets/cahier-notes.png" alt="Grille d’évaluations" />
           </div>
           <div class="feature-text">
             <h3>Évaluations &amp; cotes</h3>
-            <p>Création d’évaluations, tri des élèves, résultats couleur et critères A–B–C–D.</p>
+            <p>Une sommative obligatoire par module, plus les formatives. Résultats couleur et critères A–B–C–D.</p>
           </div>
         </article>
         <article class="feature">
           <div class="feature-text" style="padding:0.35rem 0.15rem;">
             <h3>Aussi dans l’app</h3>
-            <p>Sync iCloud, sauvegarde complète JSON, export PDF groupé, widget Aujourd’hui, raccourcis Siri et mode clair / sombre.</p>
+            <p>Appel du jour, absents aux sommatives avec case « repassée », agenda, emploi du temps partagé, iPhone, données locales, export PDF, widget Aujourd’hui et mode clair / sombre.</p>
           </div>
         </article>
       </div>
@@ -1082,7 +1172,9 @@
             <li>Critères 2 et 3 souvent incontournables.</li>
             <li>Unités de grille : 8 en S1, 11 en S2, 8 en S3.</li>
             <li>Onglet Notes disponible uniquement en S1 ; S2/S3 = matières + prévisionnel.</li>
-            <li>Règles spécifiques pour les unités U6, U7 et U8 en S1.</li>
+            <li>Règles spécifiques pour les unités U2, U6, U7 et U8 en S1.</li>
+            <li>Unité 2, géométrie plane : C-B-B-B est vert ; un seul critère incontournable à C (par exemple C-B-C-B) est jaune.</li>
+            <li>Une sommative n’a pas de date tant que l’enseignant ne l’a pas choisie.</li>
           </ul>
         </div>
 
@@ -1094,6 +1186,8 @@
             <li>Fusion intelligente en cas de sync (même identité pédagogique).</li>
             <li>Copie de prévisionnel d’une classe vers une autre.</li>
             <li>Absences prévisionnel : formation, journée pédagogique, rentrée, sortie, grève, autres.</li>
+            <li>Appel par date, totaux d’absences et de retards par période, et suivi des évaluations repassées.</li>
+            <li>Écrans adaptés à l’iPhone : accueil, cahier, grille critériée et présences.</li>
           </ul>
         </div>
       </div>
@@ -1134,11 +1228,11 @@
       <p class="section-lead">Deux écrans centraux pour organiser la semaine et encoder le cours.</p>
       <div class="daily-visuals">
         <figure class="shot wide">
-          <img src="horaire-classe.png" alt="Horaire de la classe" />
+          <img src="assets/horaire-classe.png" alt="Horaire de la classe" />
           <figcaption>Horaire provisoire / définitif</figcaption>
         </figure>
         <figure class="shot wide">
-          <img src="encoder-matiere.png" alt="Encoder la matière" />
+          <img src="assets/encoder-matiere.png" alt="Encoder la matière" />
           <figcaption>Encoder la matière du jour</figcaption>
         </figure>
       </div>
@@ -1149,12 +1243,28 @@
       <h2 class="section-title">Toutes les captures</h2>
       <p class="section-lead">Visuels issus de l’application réelle CDM-MATH.</p>
       <div class="shot-rail three">
-        <figure class="shot"><img src="carte-classe.png" alt="Carte classe" /><figcaption>Classe</figcaption></figure>
-        <figure class="shot"><img src="cahier-matieres.png" alt="Matières" /><figcaption>Matières</figcaption></figure>
-        <figure class="shot"><img src="previsionnel-calendrier.png" alt="Prévisionnel" /><figcaption>Prévisionnel</figcaption></figure>
-        <figure class="shot"><img src="cahier-notes.png" alt="Notes" /><figcaption>Notes</figcaption></figure>
-        <figure class="shot"><img src="encoder-matiere.png" alt="Encoder" /><figcaption>Encoder</figcaption></figure>
-        <figure class="shot"><img src="horaire-classe.png" alt="Horaire" /><figcaption>Horaire</figcaption></figure>
+        <figure class="shot"><img src="assets/carte-classe.png" alt="Carte classe" /><figcaption>Classe</figcaption></figure>
+        <figure class="shot"><img src="assets/cahier-matieres.png" alt="Matières" /><figcaption>Matières</figcaption></figure>
+        <figure class="shot"><img src="assets/previsionnel-calendrier.png" alt="Prévisionnel" /><figcaption>Prévisionnel</figcaption></figure>
+        <figure class="shot"><img src="assets/cahier-notes.png" alt="Notes" /><figcaption>Notes</figcaption></figure>
+        <figure class="shot"><img src="assets/encoder-matiere.png" alt="Encoder" /><figcaption>Encoder</figcaption></figure>
+        <figure class="shot"><img src="assets/horaire-classe.png" alt="Horaire" /><figcaption>Horaire</figcaption></figure>
+        <figure class="shot"><img src="assets/accueil.png" alt="Accueil" /><figcaption>Accueil</figcaption></figure>
+        <figure class="shot"><img src="assets/emploi-du-temps.png" alt="Emploi du temps" /><figcaption>Emploi du temps</figcaption></figure>
+        <figure class="shot"><img src="assets/agenda.png" alt="Agenda" /><figcaption>Agenda</figcaption></figure>
+        <figure class="shot"><img src="assets/presences.png" alt="Feuille d’appel" /><figcaption>Présences</figcaption></figure>
+        <figure class="shot"><img src="assets/absents-sommatives.png" alt="Liste des absents à une sommative" /><figcaption>Absents</figcaption></figure>
+        <figure class="shot"><img src="assets/cahier-sommatives.png" alt="Sommatives obligatoires du cahier de notes" /><figcaption>Sommatives</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="wrap reveal" id="rgpd">
+      <p class="section-kicker">Données personnelles</p>
+      <h2 class="section-title">RGPD</h2>
+      <div class="rgpd">
+        <h2>Les données restent sur l’appareil</h2>
+        <p>Les noms, les notes, les présences et l’agenda sont enregistrés uniquement en local, sur l’iPad, l’iPhone ou le Mac utilisé pour la classe. Ils ne sont pas synchronisés sur iCloud et ne sont pas envoyés vers un serveur.</p>
+        <p class="attention">Attention : un export est possible (PDF du carnet, rapports des élèves, sauvegarde complète). Ce fichier quitte l’appareil et contient des données personnelles. Ne le déposez pas dans un dossier partagé, et ne le transmettez pas sans nécessité.</p>
       </div>
     </section>
 
